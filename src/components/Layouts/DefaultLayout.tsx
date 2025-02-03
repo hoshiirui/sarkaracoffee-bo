@@ -1,14 +1,24 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { useRouter } from "next/navigation";
+import { ToastError } from "@/helper/Toast";
 
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      ToastError("Anda belum login!");
+      router.push("/login");
+    }
+  }, []);
+
   return (
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
