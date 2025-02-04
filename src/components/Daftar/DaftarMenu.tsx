@@ -523,7 +523,7 @@ const MenuListPageContent = () => {
                     >
                       <img
                         alt={product.name}
-                        src={`images/products/${product.menuType}/${product.imageSrc}`}
+                        src={`https://nqzspgzcbmwdwnzdhbrl.supabase.co/storage/v1/object/public/menuimages//${product.imageSrc}`}
                         className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
                       />
                       <div className="mt-4">

@@ -91,34 +91,52 @@ const TableOrderDetailPageContent = () => {
         <Breadcrumb pageName="Order Detail" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           {!isLoading && orderHeader ? (
-            <div className="mb-4 flex flex-row items-center justify-between ">
-              <div>
-                <p className="mb-2 text-title-md font-medium text-black dark:text-white">
-                  Order {orderHeader.id}
-                </p>
-                <p
-                  className={`mb-2 inline-flex rounded-lg bg-opacity-10 px-3 py-1 text-sm font-medium capitalize ${
-                    orderHeader.status === "paid"
-                      ? "bg-success text-success"
-                      : orderHeader.status === "unpaid"
-                        ? "bg-danger text-danger"
-                        : "bg-warning text-warning"
-                  }`}
-                >
-                  {orderHeader.status}
-                </p>
-                <p>Pelanggan: {orderHeader.nama}</p>
+            <>
+              <div className="mb-4 flex flex-row items-center justify-between ">
+                <div>
+                  <p className="mb-2 text-title-md font-medium text-black dark:text-white">
+                    Order {orderHeader.id}
+                  </p>
+                  <p
+                    className={`mb-2 inline-flex rounded-lg bg-opacity-10 px-3 py-1 text-sm font-medium capitalize ${
+                      orderHeader.status === "paid"
+                        ? "bg-success text-success"
+                        : orderHeader.status === "unpaid"
+                          ? "bg-danger text-danger"
+                          : "bg-warning text-warning"
+                    }`}
+                  >
+                    {orderHeader.status}
+                  </p>
+                  <p>Pelanggan: {orderHeader.nama}</p>
+                </div>
+                {orderHeader.status === "paid" ||
+                orderHeader.status === "Paid" ? null : (
+                  <button
+                    className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+                    onClick={handlePaid}
+                  >
+                    Konfirmasi Pesanan
+                  </button>
+                )}
               </div>
-              {orderHeader.status === "paid" ||
-              orderHeader.status === "Paid" ? null : (
-                <button
-                  className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                  onClick={handlePaid}
-                >
-                  Konfirmasi Pesanan
-                </button>
-              )}
-            </div>
+              {orderHeader.catatan != "" && orderHeader.catatan ? (
+                <div className="relative mb-4 flex items-center justify-between bg-white pt-4">
+                  <div className="w-full">
+                    <label className="text-md mb-3 block font-medium text-black dark:text-white">
+                      Catatan
+                    </label>
+
+                    <textarea
+                      disabled
+                      className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+                    >
+                      {orderHeader.catatan}
+                    </textarea>
+                  </div>
+                </div>
+              ) : null}
+            </>
           ) : null}
 
           <div className="max-w-full overflow-x-auto">
