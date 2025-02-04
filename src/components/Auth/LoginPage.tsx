@@ -38,17 +38,23 @@ const LoginPageContent = () => {
         if (data === null) {
           ToastError("Username atau password salah!");
         } else {
-          console.log(data);
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              username: data.username,
-              role: data.role,
-              nama: data.nama,
-            }),
-          );
-          ToastSuccess(`Selamat datang, ${data.nama}!`);
-          router.push("/");
+          if (data.status) {
+            console.log(data);
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                username: data.username,
+                role: data.role,
+                nama: data.nama,
+                status: data.status,
+                id: data.id,
+              }),
+            );
+            ToastSuccess(`Selamat datang, ${data.nama}!`);
+            router.push("/");
+          } else {
+            ToastError("Username telah di nonaktifkan!");
+          }
         }
 
         setIsLoading(false);
