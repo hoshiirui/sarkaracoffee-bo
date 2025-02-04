@@ -10,5 +10,6 @@ export interface MenuSarkara {
   variants?: {
     name: string;
     add: number | 0;
+    desc?: string;
   }[];
 }

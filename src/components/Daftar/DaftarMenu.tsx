@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Modal } from "../Modals/Modal";
 import { MenuSarkara } from "@/types/MenuSarkara";
 import { formatToIDR } from "@/helper/idrFormatter";
+import { v4 as uuidv4 } from "uuid";
 
 const sarkaraProducts = [
   {
@@ -425,11 +426,11 @@ const sarkaraProducts = [
     recPrior: 6,
     menuType: "food",
     categories: [],
-    variants: [
-      { name: "coklat", add: 0 },
-      { name: "keju", add: 0 },
-      { name: "mix", add: 2000 },
-    ],
+    // variants: [
+    //   { name: "coklat", add: 0 },
+    //   { name: "keju", add: 0 },
+    //   { name: "mix", add: 2000 },
+    // ],
     productDetail:
       "Pisang goreng renyah dengan pilihan topping cokelat, keju, atau mix.",
   },
@@ -437,58 +438,127 @@ const sarkaraProducts = [
 
 const MenuListPageContent = () => {
   const [selectedMenu, setSelectedMenu] = useState<MenuSarkara>();
-  const [selectedProducts, setSelectedProducts] =
-    useState<MenuSarkara[]>(sarkaraProducts);
+  const [selectedProducts, setSelectedProducts] = useState<MenuSarkara[]>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSync = async () => {
+    const supabase = createClient();
+    const filteredMenu = sarkaraProducts.map((item) => ({
+      ...item,
+      id: uuidv4(),
+    }));
+
+    try {
+      const { data, error } = await supabase.from("menu").insert(filteredMenu);
+
+      if (error) {
+        console.error("Error fetching data:", error.message);
+      } else {
+        if (data === null) {
+          ToastError("Username atau password salah!");
+        } else {
+          console.log(data);
+
+          ToastSuccess(`Berhasil!`);
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error);
+        ToastError(error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    const supabase = createClient();
+
+    try {
+      const { data, error } = await supabase
+        .from("menu")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.error("Error fetching data:", error.message);
+      } else {
+        setSelectedProducts(data);
+        console.log(data);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        ToastError(error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // fetchDetailData();
+  }, []);
+
   return (
     <>
       <DefaultLayout>
         <Breadcrumb pageName="Daftar Menu" />
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
-            {/* Product grid */}
-            <div className="col-span-2 mb-8 lg:col-span-3">
-              <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                {selectedProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="group relative cursor-pointer"
-                    onClick={() => {
-                      setSelectedMenu(product);
-                      //   setShowMenuModal(true);
-                    }}
-                  >
-                    <img
-                      alt={product.name}
-                      src={`images/products/${product.menuType}/${product.imageSrc}`}
-                      className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
-                    />
-                    <div className="mt-4">
-                      <h3 className="text-md text-sarkara-sign-1 font-bold">
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.name}
-                      </h3>
-                      <p className="md:text-md text-sarkara-sign mt-1 text-lg font-bold">
-                        {formatToIDR(product.price)}
-                      </p>
-                      <p className="mt-1 text-sm capitalize text-gray-500">
-                        {product.menuType === "food"
-                          ? "Food & Snacks "
-                          : product.menuType === "others"
-                            ? "Tea & Squash & Others"
-                            : product.menuType}
-                      </p>
+            {!isLoading && selectedProducts ? (
+              <div className="col-span-2 mb-8 lg:col-span-3">
+                {/* <button onClick={handleSync}>sofsdof</button> */}
+                <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                  {selectedProducts.map((product) => (
+                    <div
+                      key={product.id}
+                      className="group relative cursor-pointer"
+                      onClick={() => {
+                        setSelectedMenu(product);
+                        //   setShowMenuModal(true);
+                      }}
+                    >
+                      <img
+                        alt={product.name}
+                        src={`images/products/${product.menuType}/${product.imageSrc}`}
+                        className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
+                      />
+                      <div className="mt-4">
+                        <h3 className="text-md text-sarkara-sign-1 font-bold">
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0"
+                          />
+                          {product.name}
+                        </h3>
+                        <p className="md:text-md text-sarkara-sign mt-1 text-lg font-bold">
+                          {formatToIDR(product.price)}
+                        </p>
+                        <p className="mt-1 text-sm capitalize text-gray-500">
+                          {product.menuType === "food"
+                            ? "Food & Snacks "
+                            : product.menuType === "others"
+                              ? "Tea & Squash & Others"
+                              : product.menuType}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
-                {/* <button
+                  {/* <button
                   onClick={() => setShowOrderList(true)}
                   className="bg-sarkara-sign-1 hover:bg-sarkara-sign fixed bottom-8 right-8 rounded-full px-4 py-4 font-bold text-white shadow-lg"
                 >
                   <ShoppingBagIcon width={24} height={24} />
                 </button> */}
+                </div>
               </div>
-            </div>
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
         </div>
       </DefaultLayout>
