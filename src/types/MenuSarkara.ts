@@ -12,4 +12,5 @@ export interface MenuSarkara {
     add: number | 0;
     desc?: string;
   }[];
+  created_at: string;
 }

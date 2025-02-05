@@ -3,6 +3,7 @@ import FormElements from "@/components/FormElements";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MenuListPageContent from "@/components/Daftar/DaftarMenu";
+import MenuListTablePageContent from "@/components/Tables/TableMenu";
 
 export const metadata: Metadata = {
   title: "Daftar Menu Sarkara",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const DaftarMenuPage = () => {
-  return <MenuListPageContent />;
+  return <MenuListTablePageContent />;
 };
 
 export default DaftarMenuPage;
