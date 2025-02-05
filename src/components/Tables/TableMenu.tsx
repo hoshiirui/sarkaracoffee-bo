@@ -366,7 +366,10 @@ const MenuListTablePageContent = () => {
                         <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                           <div className="flex h-full flex-row items-center gap-2 ">
                             {order.categories.map((cat) => (
-                              <p className="rounded-lg bg-gray-100 px-2 py-1 capitalize">
+                              <p
+                                key={cat}
+                                className="rounded-lg bg-gray-100 px-2 py-1 capitalize"
+                              >
                                 {cat}
                               </p>
                             ))}
