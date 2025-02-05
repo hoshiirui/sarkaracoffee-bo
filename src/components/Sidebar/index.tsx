@@ -110,6 +110,7 @@ const menuGroups = [
   },
   {
     name: "ADMIN AREA",
+    roleNeeded: "admin",
     menuItems: [
       {
         icon: (
@@ -199,7 +200,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Sidebar Menu --> */}
           <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
             {menuGroups.map((group, groupIndex) => (
-              <div key={groupIndex}>
+              <div
+                key={groupIndex}
+                className={`${group.roleNeeded ? (group.roleNeeded === "admin" && (JSON.parse(localStorage.getItem("user") || "").role === "admin" || JSON.parse(localStorage.getItem("user") || "").role === "pemilik") ? null : "hidden") : null}`}
+              >
                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                   {group.name}
                 </h3>

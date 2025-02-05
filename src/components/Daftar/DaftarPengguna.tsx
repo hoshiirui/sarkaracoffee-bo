@@ -12,6 +12,7 @@ import { Modal } from "../Modals/Modal";
 import { MenuSarkara } from "@/types/MenuSarkara";
 import { formatToIDR } from "@/helper/idrFormatter";
 import { BsArrowClockwise } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 interface userData {
   id: string;
@@ -27,6 +28,7 @@ interface userData {
 }
 
 const StaffListPageContent = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [defaultUserDatas, setDefaultUserDatas] = useState<userData[]>();
   const [userDatas, setUserDatas] = useState<userData[]>();
@@ -72,6 +74,10 @@ const StaffListPageContent = () => {
   useEffect(() => {
     fetchData();
     // fetchDetailData();
+    if (JSON.parse(localStorage.getItem("user") || "").role === "biasa") {
+      ToastError("Kamu tidak memiliki akses untuk melihat halaman ini!");
+      router.push("/");
+    }
   }, []);
 
   const handleDelete = async (id: string) => {
