@@ -202,7 +202,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             {menuGroups.map((group, groupIndex) => (
               <div
                 key={groupIndex}
-                className={`${group.roleNeeded ? (group.roleNeeded === "admin" && (JSON.parse(localStorage.getItem("user") || "").role === "admin" || JSON.parse(localStorage.getItem("user") || "").role === "pemilik") ? null : "hidden") : null}`}
+                className={`${localStorage.getItem("user") ? (group.roleNeeded ? (group.roleNeeded === "admin" && (JSON.parse(localStorage.getItem("user") || "").role === "admin" || JSON.parse(localStorage.getItem("user") || "").role === "pemilik") ? null : "hidden") : null) : null}`}
               >
                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                   {group.name}
