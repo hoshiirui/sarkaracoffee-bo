@@ -78,7 +78,7 @@ const PromoListPageContent = () => {
               <thead>
                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
                   <th className="min-w-[175px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
-                    Nama Menu
+                    Nama Promo
                   </th>
                   <th className="px-4 py-4 font-medium text-black dark:text-white">
                     Min Trans.
@@ -109,7 +109,7 @@ const PromoListPageContent = () => {
                         <td className=" border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                           <div className="flex flex-row items-center gap-4">
                             <div
-                              className="h-14 w-14 cursor-pointer"
+                              className="h-14 w-28 cursor-pointer"
                               // onClick={() => {
                               //   setSelectedMenu(order);
                               //   setOpen(true);
@@ -119,7 +119,7 @@ const PromoListPageContent = () => {
                                 className="size-full rounded-lg object-cover"
                                 width={200}
                                 height={200}
-                                src={`https://nqzspgzcbmwdwnzdhbrl.supabase.co/storage/v1/object/public/menuimages//roppang.jpg`}
+                                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/promoimages//${order.imageHref}`}
                                 alt={`sfsd`}
                               />
                             </div>

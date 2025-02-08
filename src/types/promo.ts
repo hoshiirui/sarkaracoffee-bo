@@ -13,6 +13,7 @@ export interface Promo {
   syaratK: string;
   discType?: string;
   discAmount?: number;
+  imageHref: string;
 }
 
 export interface PromoWithMenu {
@@ -28,4 +29,5 @@ export interface PromoWithMenu {
   syaratK: string;
   discType?: string;
   discAmount?: number;
+  imageHref: string;
 }
